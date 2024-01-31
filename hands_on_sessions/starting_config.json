@@ -1,32 +1,97 @@
 {
   "HDF5": {
-    "filepath": "./RMKOutput/day_2_2/",
+    "filepath": "./RMKOutput/day_2_5/",
     "outputVars": [
-      "x1",
-      "x2",
-      "y1",
-      "y2",
-      "time"
+      "ne",
+      "ne_dual",
+      "ni",
+      "ni_dual",
+      "Ge",
+      "Ge_dual",
+      "Gi",
+      "Gi_dual",
+      "We",
+      "We_dual",
+      "Wi",
+      "Wi_dual",
+      "Te",
+      "Te_dual",
+      "Ti",
+      "Ti_dual",
+      "qe",
+      "qe_dual",
+      "qi",
+      "qi_dual",
+      "E",
+      "E_dual",
+      "ue",
+      "ue_dual",
+      "ui",
+      "ui_dual",
+      "cs",
+      "time",
+      "gammaRight",
+      "cs_b",
+      "n_b",
+      "G_b",
+      "u_b"
     ]
   },
   "MPI": {
     "commData": {
-      "haloExchangeVars": [],
-      "scalarBroadcastRoots": [],
-      "scalarVarsToBroadcast": [],
+      "haloExchangeVars": [
+        "ne",
+        "ne_dual",
+        "ni",
+        "ni_dual",
+        "Ge_dual",
+        "Ge",
+        "Gi_dual",
+        "Gi",
+        "We",
+        "We_dual",
+        "Wi",
+        "Wi_dual",
+        "Te",
+        "Te_dual",
+        "Ti",
+        "Ti_dual",
+        "qe_dual",
+        "qe",
+        "qi_dual",
+        "qi",
+        "ue_dual",
+        "ue",
+        "ui_dual",
+        "ui"
+      ],
+      "scalarBroadcastRoots": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "scalarVarsToBroadcast": [
+        "gammaRight",
+        "cs_b",
+        "n_b",
+        "G_b",
+        "u_b"
+      ],
       "varsToBroadcast": []
     },
     "numProcsH": 1,
-    "numProcsX": 1,
+    "numProcsX": 8,
     "xHaloWidth": 1
   },
   "PETSc": {
     "active": true,
     "objGroups": 1,
     "solverOptions": {
-      "PETScCommandLineOpts": "-pc_type bjacobi -sub_pc_factor_shift_type nonzero -sub_pc_factor_levels 1",
+      "PETScCommandLineOpts": "-pc_type bjacobi -sub_pc_factor_shift_type nonzero -sub_pc_factor_levels 1 -ksp_gmres_restart 80",
       "hyprePCType": "",
-      "kspSolverType": "bcgs",
+      "kspSolverType": "gmres",
       "maxSolverIters": 10000,
       "solverToleranceAbs": 0.99999999999999995E-20,
       "solverToleranceDiv": 0.1E+8,
@@ -34,69 +99,55 @@
     }
   },
   "customDerivations": {
-    "nodeModelDeriv_predatorPreyQuickerX_0": {
-      "nodes": {
-        "index1": {
-          "children": [
-            2
-          ],
-          "constant": 0.11000000000000001E+1,
-          "isAdditiveNode": true,
-          "leafVariable": "none",
-          "parent": 0,
-          "unaryIntegerParams": [],
-          "unaryRealParams": [],
-          "unaryLogicalParams": [],
-          "unaryTransform": "none"
-        },
-        "index2": {
-          "children": [],
-          "constant": -0.40000000000000002E+0,
-          "isAdditiveNode": false,
-          "leafVariable": "y1",
-          "parent": 1,
-          "unaryIntegerParams": [],
-          "unaryRealParams": [],
-          "unaryLogicalParams": [],
-          "unaryTransform": "none"
-        }
-      },
-      "numNodes": 2,
-      "type": "calculationTreeDerivation"
+    "boundaryFlux": {
+      "innerDerivFuncName": "none",
+      "innerDerivIndices": [
+        1
+      ],
+      "innerDerivPower": 0.1E+1,
+      "innerDerivation": "linExtrapRight",
+      "outerDerivIndices": [
+        2,
+        3
+      ],
+      "outerDerivPower": 0.1E+1,
+      "outerDerivation": "linExtrapRightLB",
+      "type": "multiplicativeDerivation"
     },
-    "nodeModelDeriv_predatorPreyQuickerY_0": {
-      "nodes": {
-        "index1": {
-          "children": [
-            2
-          ],
-          "constant": -0.40000000000000002E+0,
-          "isAdditiveNode": true,
-          "leafVariable": "none",
-          "parent": 0,
-          "unaryIntegerParams": [],
-          "unaryRealParams": [],
-          "unaryLogicalParams": [],
-          "unaryTransform": "none"
-        },
-        "index2": {
-          "children": [],
-          "constant": 0.10000000000000001E+0,
-          "isAdditiveNode": false,
-          "leafVariable": "x1",
-          "parent": 1,
-          "unaryIntegerParams": [],
-          "unaryRealParams": [],
-          "unaryLogicalParams": [],
-          "unaryTransform": "none"
-        }
+    "linExtrapRight": {
+      "expectLowerBoundVar": false,
+      "expectUpperBoundVar": false,
+      "extrapolationStrategy": {
+        "leftBoundary": false,
+        "staggeredVars": false,
+        "type": "linExtrapolation",
+        "expectedHaloWidth": 1
       },
-      "numNodes": 2,
-      "type": "calculationTreeDerivation"
+      "fixedLowerBound": 0.0E+0,
+      "ignoreLowerBound": false,
+      "ignoreUpperBound": true,
+      "type": "boundedExtrapolationDerivation",
+      "fixedUpperBound": 0.17976931348623157E+309
+    },
+    "linExtrapRightLB": {
+      "expectLowerBoundVar": true,
+      "expectUpperBoundVar": false,
+      "extrapolationStrategy": {
+        "leftBoundary": false,
+        "staggeredVars": false,
+        "type": "linExtrapolation",
+        "expectedHaloWidth": 1
+      },
+      "fixedLowerBound": 0.0E+0,
+      "ignoreLowerBound": false,
+      "ignoreUpperBound": true,
+      "type": "boundedExtrapolationDerivation",
+      "fixedUpperBound": 0.17976931348623157E+309
     },
     "tags": [
-      "nodeModelDeriv_predatorPreyQuickerX_0",
-      "nodeModelDeriv_predatorPreyQuickerY_0"
+      "linExtrapRight",
+      "linExtrapRightLB",
+      "boundaryFlux"
     ]
   },
   "integrator": {
@@ -104,36 +155,240 @@
       "absTol": 0.1E+2,
       "associatedPETScGroup": 1,
       "convergenceVars": [
-        "x2",
-        "y2"
+        "ne",
+        "ni",
+        "Ge_dual",
+        "Gi_dual",
+        "We",
+        "Wi"
       ],
       "internalStepControl": {
-        "active": false,
+        "active": true,
         "minNumNonlinIters": 5,
         "startingNumSteps": 1,
         "stepDecrament": 1,
         "stepMultiplier": 2
       },
       "maxNonlinIters": 100,
-      "nonlinTol": 0.1E-13,
+      "nonlinTol": 0.99999999999999998E-12,
       "type": "BDE",
       "use2Norm": false
     },
-    "BE1": {
+    "StepBDE": {
+      "advection-Ge": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "advection-Gi": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "advection-We": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "advection-Wi": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "advection-pe": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "advection-pi": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
       "allowTimeEvolution": false,
+      "ampereMaxwell": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "braginskiiq": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
       "commData": {
-        "haloExchangeVars": [],
-        "scalarBroadcastRoots": [],
-        "scalarVarsToBroadcast": [],
+        "haloExchangeVars": [
+          "ne",
+          "ne_dual",
+          "ni",
+          "ni_dual",
+          "Ge_dual",
+          "Ge",
+          "Gi_dual",
+          "Gi",
+          "We",
+          "We_dual",
+          "Wi",
+          "Wi_dual",
+          "Te",
+          "Te_dual",
+          "Ti",
+          "Ti_dual",
+          "qe_dual",
+          "qe",
+          "qi_dual",
+          "qi",
+          "ue_dual",
+          "ue",
+          "ui_dual",
+          "ui"
+        ],
+        "scalarBroadcastRoots": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "scalarVarsToBroadcast": [
+          "gammaRight",
+          "cs_b",
+          "n_b",
+          "G_b",
+          "u_b"
+        ],
         "varsToBroadcast": []
       },
+      "continuity-ne": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "continuity-ni": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "divq_e": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "divq_i": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "eiFriction": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "eiHeatEx": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "energySource": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
       "evolvedModels": [
-        "predatorPreyQuickerX",
-        "predatorPreyQuickerY"
+        "continuity-ne",
+        "continuity-ni",
+        "pressureGrad-Ge",
+        "pressureGrad-Gi",
+        "advection-Ge",
+        "advection-Gi",
+        "ampereMaxwell",
+        "lorentzForce",
+        "implicitTemp",
+        "advection-We",
+        "advection-Wi",
+        "advection-pe",
+        "advection-pi",
+        "lorentzForceWork",
+        "braginskiiq",
+        "divq_e",
+        "divq_i",
+        "eiHeatEx",
+        "energySource",
+        "eiFriction",
+        "rec"
       ],
       "globalStepFraction": 0.1E+1,
+      "implicitTemp": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
       "integratorTag": "BE",
-      "predatorPreyQuickerX": {
+      "lorentzForce": {
         "groupIndices": [
           1
         ],
@@ -142,7 +397,34 @@
           1
         ]
       },
-      "predatorPreyQuickerY": {
+      "lorentzForceWork": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "pressureGrad-Ge": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "pressureGrad-Gi": {
+        "groupIndices": [
+          1
+        ],
+        "internallyUpdateModelData": true,
+        "internallyUpdatedGroups": [
+          1
+        ]
+      },
+      "rec": {
         "groupIndices": [
           1
         ],
@@ -153,46 +435,14 @@
       },
       "useInitialInput": false
     },
-    "RK": {
-      "order": 4,
-      "type": "RK"
-    },
-    "RK1": {
-      "allowTimeEvolution": false,
-      "commData": {
-        "haloExchangeVars": [],
-        "scalarBroadcastRoots": [],
-        "scalarVarsToBroadcast": [],
-        "varsToBroadcast": []
-      },
-      "evolvedModels": [
-        "predatorPrey"
-      ],
-      "globalStepFraction": 0.1E+1,
-      "integratorTag": "RK",
-      "predatorPrey": {
-        "groupIndices": [
-          1,
-          2
-        ],
-        "internallyUpdateModelData": true,
-        "internallyUpdatedGroups": [
-          1,
-          2
-        ]
-      },
-      "useInitialInput": false
-    },
-    "initialTimestep": 0.1E-1,
+    "initialTimestep": 0.101E+3,
     "integratorTags": [
-      "RK",
       "BE"
     ],
     "numGeneralGroups": 1,
-    "numImplicitGroups": 2,
+    "numImplicitGroups": 1,
     "stepTags": [
-      "RK1",
-      "BE1"
+      "StepBDE"
     ],
     "timestepController": {
       "active": false
@@ -202,7 +452,303 @@
     "tags": []
   },
   "models": {
-    "predatorPrey": {
+    "advection-Ge": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ge_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "interpolatedVarName": "ue_dual",
+          "stencilType": "centralDifferenceInterpolated",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "rightBC": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ge_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ue",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux",
+        "rightBC"
+      ],
+      "type": "customModel"
+    },
+    "advection-Gi": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "interpolatedVarName": "ui_dual",
+          "stencilType": "centralDifferenceInterpolated",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "rightBC": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ui",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux",
+        "rightBC"
+      ],
+      "type": "customModel"
+    },
+    "advection-We": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "We_dual",
+            "ne_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1,
+            -0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
       "modelboundData": {
         "modelboundDataType": "none"
       },
@@ -210,18 +756,27 @@
         "tags": []
       },
       "termTags": [
-        "xTerm",
-        "yTerm"
+        "divFlux"
       ],
-      "type": "customModel",
-      "xTerm": {
+      "type": "customModel"
+    },
+    "advection-Wi": {
+      "divFlux": {
         "customNormConst": {
-          "multConst": 0.1E+1,
-          "normNames": [],
-          "normPowers": []
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
         },
         "evaluatedTermGroup": 0,
-        "evolvedVar": "x1",
+        "evolvedVar": "Wi",
         "fixedMatrix": false,
         "generalGroups": [
           1
@@ -230,14 +785,12 @@
         "implicitGroups": [
           1
         ],
-        "implicitVar": "x1",
+        "implicitVar": "Gi_dual",
         "skipPattern": false,
         "spatialProfile": [],
         "stencilData": {
-          "evolvedHarmonics": [],
-          "evolvedVCells": [],
-          "evolvedXCells": [],
-          "stencilType": "diagonalStencil"
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
         },
         "timeSignalData": {
           "realTimePeriod": false,
@@ -246,39 +799,1177 @@
           "timeSignalType": "none"
         },
         "varData": {
-          "requiredColVarNames": [],
-          "requiredColVarPowers": [],
+          "requiredColVarNames": [
+            "Wi_dual",
+            "ni_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1,
+            -0.1E+1
+          ],
           "requiredMBColVarNames": [],
           "requiredMBColVarPowers": [],
-          "requiredMBRowVarNames": [
-            "xDeriv"
-          ],
-          "requiredMBRowVarPowers": [
-            0.1E+1
-          ],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
           "requiredRowVarNames": [],
           "requiredRowVarPowers": []
         },
         "velocityProfile": [],
         "multCopyTermName": "none"
       },
-      "yTerm": {
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux"
+      ],
+      "type": "customModel"
+    },
+    "advection-pe": {
+      "divFlux": {
         "customNormConst": {
-          "multConst": 0.1E+1,
-          "normNames": [],
-          "normPowers": []
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
         },
         "evaluatedTermGroup": 0,
-        "evolvedVar": "y1",
+        "evolvedVar": "We",
         "fixedMatrix": false,
         "generalGroups": [
           1
         ],
         "harmonicProfile": [],
         "implicitGroups": [
-          2
+          1
         ],
-        "implicitVar": "y1",
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Te_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux"
+      ],
+      "type": "customModel"
+    },
+    "advection-pi": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Ti_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux"
+      ],
+      "type": "customModel"
+    },
+    "ampereMaxwell": {
+      "currentGe_dual": {
+        "customNormConst": {
+          "multConst": 0.18095165813059313E-7,
+          "normNames": [
+            "density",
+            "time",
+            "speed",
+            "EField"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "E_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "currentGi_dual": {
+        "customNormConst": {
+          "multConst": -0.18095165813059313E-7,
+          "normNames": [
+            "density",
+            "time",
+            "speed",
+            "EField"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "E_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "currentGe_dual",
+        "currentGi_dual"
+      ],
+      "type": "customModel"
+    },
+    "braginskiiq": {
+      "bulkGrad_e": {
+        "customNormConst": {
+          "multConst": -0.30654874188469021E+5,
+          "normNames": [
+            "eVTemperature",
+            "length",
+            "heatFlux"
+          ],
+          "normPowers": [
+            0.35E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "qe_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "ignoreJacobian": true,
+          "stencilType": "staggeredDifferenceStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLee"
+          ],
+          "requiredMBRowVarPowers": [
+            -0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "Te_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.25E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "bulkGrad_i": {
+        "customNormConst": {
+          "multConst": -0.88400278452413625E+3,
+          "normNames": [
+            "eVTemperature",
+            "length",
+            "heatFlux"
+          ],
+          "normPowers": [
+            0.35E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "qi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ti",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "ignoreJacobian": true,
+          "stencilType": "staggeredDifferenceStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLii"
+          ],
+          "requiredMBRowVarPowers": [
+            -0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "Ti_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.25E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "identityTerm_e": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "qe_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "qe_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "identityTerm_i": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "qi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "qi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "dataNames": [
+          "logLee",
+          "logLii"
+        ],
+        "logLee": {
+          "derivationPriority": 0,
+          "isDerivedFromOtherData": false,
+          "isDistribution": false,
+          "isScalar": false,
+          "isSingleHarmonic": false,
+          "requiredVarNames": [
+            "Te_dual",
+            "ne_dual"
+          ],
+          "ruleName": "logLee"
+        },
+        "logLii": {
+          "derivationPriority": 0,
+          "isDerivedFromOtherData": false,
+          "isDistribution": false,
+          "isScalar": false,
+          "isSingleHarmonic": false,
+          "requiredVarNames": [
+            "ni_dual",
+            "ni_dual",
+            "Ti_dual",
+            "Ti_dual"
+          ],
+          "ruleName": "logLiiD+_D+"
+        },
+        "modelboundDataType": "varlikeData"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "identityTerm_e",
+        "bulkGrad_e",
+        "identityTerm_i",
+        "bulkGrad_i"
+      ],
+      "type": "customModel"
+    },
+    "continuity-ne": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "ne",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "rightBC": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "ne",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ne",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ue",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux",
+        "rightBC"
+      ],
+      "type": "customModel"
+    },
+    "continuity-ni": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "ni",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "rightBC": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "ni",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ni",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ui",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux",
+        "rightBC"
+      ],
+      "type": "customModel"
+    },
+    "divq_e": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.62414959617521132E+19,
+          "normNames": [
+            "heatFlux",
+            "time",
+            "length",
+            "density",
+            "eVTemperature"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "qe_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "rightBCT": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ne",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ue",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Te"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "gammaRight"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "rightBCU": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ue",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "u_b"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux",
+        "rightBCT",
+        "rightBCU"
+      ],
+      "type": "customModel"
+    },
+    "divq_i": {
+      "divFlux": {
+        "customNormConst": {
+          "multConst": -0.62414959617521132E+19,
+          "normNames": [
+            "heatFlux",
+            "time",
+            "length",
+            "density",
+            "eVTemperature"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "qi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "stencilType": "staggeredDifferenceStencil",
+          "ignoreJacobian": false
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "rightBCT": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ni",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ui",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Ti"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ionGamma"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "rightBCU": {
+        "customNormConst": {
+          "multConst": -0.36712989030344538E+4,
+          "normNames": [
+            "speed",
+            "time",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "fluxJacVar": "ue",
+          "leftBoundary": false,
+          "lowerBoundVar": "cs",
+          "stencilType": "boundaryStencil",
+          "ignoreJacobian": false,
+          "dontExtrapolate": false,
+          "noLowerBound": false,
+          "fixedLowerBound": 0.0E+0
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "u_b"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "divFlux",
+        "rightBCT",
+        "rightBCU"
+      ],
+      "type": "customModel"
+    },
+    "eiFriction": {
+      "eFriction_ue": {
+        "customNormConst": {
+          "multConst": 0.66360907330844252E-1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ge_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
         "skipPattern": false,
         "spatialProfile": [],
         "stencilData": {
@@ -299,44 +1990,1147 @@
           "requiredMBColVarNames": [],
           "requiredMBColVarPowers": [],
           "requiredMBRowVarNames": [
-            "yDeriv"
+            "logLei"
           ],
           "requiredMBRowVarPowers": [
             0.1E+1
           ],
+          "requiredRowVarNames": [
+            "ne_dual",
+            "Te_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1,
+            -0.15E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "eFriction_ui": {
+        "customNormConst": {
+          "multConst": -0.66360907330844252E-1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ge_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne_dual",
+            "Te_dual",
+            "ni_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1,
+            -0.15E+1,
+            -0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "electronGradTFriction": {
+        "customNormConst": {
+          "multConst": -0.12505443161936081E+12,
+          "normNames": [
+            "eVTemperature",
+            "time",
+            "speed",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ge_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "ignoreJacobian": true,
+          "stencilType": "staggeredDifferenceStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ne_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "iFriction_ue": {
+        "customNormConst": {
+          "multConst": 0.18075593702271067E-4,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne_dual",
+            "Te_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1,
+            -0.15E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "iFriction_ui": {
+        "customNormConst": {
+          "multConst": -0.18075593702271067E-4,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne_dual",
+            "Te_dual",
+            "ni_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1,
+            -0.15E+1,
+            -0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "ionGradTFriction": {
+        "customNormConst": {
+          "multConst": 0.34062721375260144E+8,
+          "normNames": [
+            "eVTemperature",
+            "time",
+            "speed",
+            "length"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "ignoreJacobian": true,
+          "stencilType": "staggeredDifferenceStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ne_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "dataNames": [
+          "logLei"
+        ],
+        "logLei": {
+          "derivationPriority": 0,
+          "isDerivedFromOtherData": false,
+          "isDistribution": false,
+          "isScalar": false,
+          "isSingleHarmonic": false,
+          "requiredVarNames": [
+            "Te_dual",
+            "ne_dual"
+          ],
+          "ruleName": "logLeiD+"
+        },
+        "modelboundDataType": "varlikeData"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "electronGradTFriction",
+        "ionGradTFriction",
+        "eFriction_ue",
+        "eFriction_ui",
+        "iFriction_ue",
+        "iFriction_ui"
+      ],
+      "type": "customModel"
+    },
+    "eiHeatEx": {
+      "heatExTermA_e": {
+        "customNormConst": {
+          "multConst": -0.54226781106813208E-4,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne",
+            "Te"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1,
+            -0.15E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "heatExTermA_i": {
+        "customNormConst": {
+          "multConst": -0.54226781106813208E-4,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ti",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne",
+            "Te"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1,
+            -0.15E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "heatExTermB_e": {
+        "customNormConst": {
+          "multConst": 0.54226781106813208E-4,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ti",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne",
+            "Te"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1,
+            -0.15E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "heatExTermB_i": {
+        "customNormConst": {
+          "multConst": 0.54226781106813208E-4,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [
+            "logLei"
+          ],
+          "requiredMBRowVarPowers": [
+            0.1E+1
+          ],
+          "requiredRowVarNames": [
+            "ne",
+            "Te"
+          ],
+          "requiredRowVarPowers": [
+            0.2E+1,
+            -0.15E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "dataNames": [
+          "logLei"
+        ],
+        "logLei": {
+          "derivationPriority": 0,
+          "isDerivedFromOtherData": false,
+          "isDistribution": false,
+          "isScalar": false,
+          "isSingleHarmonic": false,
+          "requiredVarNames": [
+            "Te",
+            "ne"
+          ],
+          "ruleName": "logLeiD+"
+        },
+        "modelboundDataType": "varlikeData"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "heatExTermA_e",
+        "heatExTermB_e",
+        "heatExTermA_i",
+        "heatExTermB_i"
+      ],
+      "type": "customModel"
+    },
+    "energySource": {
+      "electronSource": {
+        "customNormConst": {
+          "multConst": 0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "We",
+        "skipPattern": false,
+        "spatialProfile": [
+          0.14421341699733947E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "We"
+          ],
+          "requiredRowVarPowers": [
+            -0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "ionSource": {
+        "customNormConst": {
+          "multConst": 0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Wi",
+        "skipPattern": false,
+        "spatialProfile": [
+          0.14421341699733947E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "Wi"
+          ],
+          "requiredRowVarPowers": [
+            -0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "electronSource",
+        "ionSource"
+      ],
+      "type": "customModel"
+    },
+    "implicitTemp": {
+      "identityTermTe": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Te",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Te",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
           "requiredRowVarNames": [],
           "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "identityTermTi": {
+        "customNormConst": {
+          "multConst": -0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ti",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ti",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "identityTermTe",
+        "wTermTe",
+        "u2TermTe",
+        "identityTermTi",
+        "wTermTi",
+        "u2TermTi"
+      ],
+      "type": "customModel",
+      "u2TermTe": {
+        "customNormConst": {
+          "multConst": -0.18952052828021821E-11,
+          "normNames": [
+            "speed",
+            "eVTemperature"
+          ],
+          "normPowers": [
+            0.2E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Te",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Ge_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Ge_dual",
+            "ne_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1,
+            -0.2E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "u2TermTi": {
+        "customNormConst": {
+          "multConst": -0.6957865075776753E-8,
+          "normNames": [
+            "speed",
+            "eVTemperature"
+          ],
+          "normPowers": [
+            0.2E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ti",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Gi_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Gi_dual",
+            "ni_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1,
+            -0.2E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "wTermTe": {
+        "customNormConst": {
+          "multConst": 0.66666666666666663E+0,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Te",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "We",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ne"
+          ],
+          "requiredRowVarPowers": [
+            -0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "wTermTi": {
+        "customNormConst": {
+          "multConst": 0.66666666666666663E+0,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ti",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "Wi",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ni"
+          ],
+          "requiredRowVarPowers": [
+            -0.1E+1
+          ]
         },
         "velocityProfile": [],
         "multCopyTermName": "none"
       }
     },
-    "predatorPreyQuickerX": {
-      "modelboundData": {
-        "dataNames": [
-          "nodeVar_0"
-        ],
-        "modelboundDataType": "varlikeData",
-        "nodeVar_0": {
-          "derivationPriority": 0,
-          "isDerivedFromOtherData": false,
-          "isDistribution": false,
-          "isScalar": false,
-          "isSingleHarmonic": false,
-          "requiredVarNames": [
-            "y1"
-          ],
-          "ruleName": "nodeModelDeriv_predatorPreyQuickerX_0"
-        }
-      },
-      "nodeTerm_0": {
+    "lorentzForce": {
+      "lorentzGe_dual": {
         "customNormConst": {
-          "multConst": 0.1E+1,
-          "normNames": [],
-          "normPowers": []
+          "multConst": -0.17588244205423419E+12,
+          "normNames": [
+            "EField",
+            "time",
+            "speed"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
         },
         "evaluatedTermGroup": 0,
-        "evolvedVar": "x2",
+        "evolvedVar": "Ge_dual",
         "fixedMatrix": false,
         "generalGroups": [
           1
@@ -345,7 +3139,7 @@
         "implicitGroups": [
           1
         ],
-        "implicitVar": "x2",
+        "implicitVar": "E_dual",
         "skipPattern": false,
         "spatialProfile": [],
         "stencilData": {
@@ -365,52 +3159,105 @@
           "requiredColVarPowers": [],
           "requiredMBColVarNames": [],
           "requiredMBColVarPowers": [],
-          "requiredMBRowVarNames": [
-            "nodeVar_0"
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ne_dual"
           ],
-          "requiredMBRowVarPowers": [
+          "requiredRowVarPowers": [
             0.1E+1
-          ],
-          "requiredRowVarNames": [],
-          "requiredRowVarPowers": []
+          ]
         },
         "velocityProfile": [],
         "multCopyTermName": "none"
+      },
+      "lorentzGi_dual": {
+        "customNormConst": {
+          "multConst": 0.4790741552229958E+8,
+          "normNames": [
+            "EField",
+            "time",
+            "speed"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "E_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ni_dual"
+          ],
+          "requiredRowVarPowers": [
+            0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
       },
       "termGenerators": {
         "tags": []
       },
       "termTags": [
-        "nodeTerm_0"
+        "lorentzGe_dual",
+        "lorentzGi_dual"
       ],
       "type": "customModel"
     },
-    "predatorPreyQuickerY": {
-      "modelboundData": {
-        "dataNames": [
-          "nodeVar_0"
-        ],
-        "modelboundDataType": "varlikeData",
-        "nodeVar_0": {
-          "derivationPriority": 0,
-          "isDerivedFromOtherData": false,
-          "isDistribution": false,
-          "isScalar": false,
-          "isSingleHarmonic": false,
-          "requiredVarNames": [
-            "x1"
-          ],
-          "ruleName": "nodeModelDeriv_predatorPreyQuickerY_0"
-        }
-      },
-      "nodeTerm_0": {
+    "lorentzForceWork": {
+      "lorentzWorkGe_dual": {
         "customNormConst": {
-          "multConst": 0.1E+1,
-          "normNames": [],
-          "normPowers": []
+          "multConst": -0.1E+1,
+          "normNames": [
+            "EField",
+            "time",
+            "speed",
+            "eVTemperature"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
         },
         "evaluatedTermGroup": 0,
-        "evolvedVar": "y2",
+        "evolvedVar": "We",
         "fixedMatrix": false,
         "generalGroups": [
           1
@@ -419,9 +3266,332 @@
         "implicitGroups": [
           1
         ],
-        "implicitVar": "y2",
+        "implicitVar": "E_dual",
         "skipPattern": false,
         "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Ge_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "lorentzWorkGi_dual": {
+        "customNormConst": {
+          "multConst": 0.1E+1,
+          "normNames": [
+            "EField",
+            "time",
+            "speed",
+            "eVTemperature"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Wi",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "E_dual",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Gi_dual"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "lorentzWorkGe_dual",
+        "lorentzWorkGi_dual"
+      ],
+      "type": "customModel"
+    },
+    "pressureGrad-Ge": {
+      "bulkGrad": {
+        "customNormConst": {
+          "multConst": -0.17588244205423419E+12,
+          "normNames": [
+            "eVTemperature",
+            "time",
+            "length",
+            "speed"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Ge_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ne",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "ignoreJacobian": true,
+          "stencilType": "staggeredDifferenceStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Te"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "bulkGrad"
+      ],
+      "type": "customModel"
+    },
+    "pressureGrad-Gi": {
+      "bulkGrad": {
+        "customNormConst": {
+          "multConst": -0.4790741552229958E+8,
+          "normNames": [
+            "eVTemperature",
+            "time",
+            "length",
+            "speed"
+          ],
+          "normPowers": [
+            0.1E+1,
+            0.1E+1,
+            -0.1E+1,
+            -0.1E+1
+          ]
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "Gi_dual",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ni",
+        "skipPattern": false,
+        "spatialProfile": [],
+        "stencilData": {
+          "ignoreJacobian": true,
+          "stencilType": "staggeredDifferenceStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [
+            "Ti"
+          ],
+          "requiredColVarPowers": [
+            0.1E+1
+          ],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [],
+          "requiredRowVarPowers": []
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "termGenerators": {
+        "tags": []
+      },
+      "termTags": [
+        "bulkGrad"
+      ],
+      "type": "customModel"
+    },
+    "rec": {
+      "modelboundData": {
+        "modelboundDataType": "none"
+      },
+      "recyclingTermEnergy": {
+        "customNormConst": {
+          "multConst": 0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "We",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ni",
+        "skipPattern": false,
+        "spatialProfile": [
+          -0.13106532723078733E-8,
+          -0.17914506203139927E-8,
+          -0.24486226775844983E-8,
+          -0.33468703793410643E-8,
+          -0.45746294186741025E-8,
+          -0.6252777056253592E-8,
+          -0.854653291818841E-8,
+          -0.11681725458070724E-7,
+          -0.15967025574466911E-7,
+          -0.21824336362873708E-7,
+          -0.29830330981714715E-7,
+          -0.40773228183579857E-7,
+          -0.557303952654537E-7,
+          -0.7617441872543463E-7,
+          -0.10411808566078374E-6,
+          -0.14231254984354261E-6,
+          -0.19451819263134107E-6,
+          -0.26587484593707015E-6,
+          -0.36340782703052527E-6,
+          -0.49671960610484628E-6,
+          -0.67893520374900718E-6,
+          -0.92799439608270488E-6,
+          -0.12684179497625048E-5,
+          -0.17337217790012701E-5,
+          -0.23697167069782673E-5,
+          -0.32390187049313236E-5,
+          -0.44272136580717462E-5,
+          -0.60512836015352978E-5,
+          -0.82711240193812608E-5,
+          -0.1130528612584422E-4,
+          -0.15452494012629598E-4,
+          -0.21121055102223053E-4,
+          -0.28869059471340864E-4,
+          -0.39459325811431433E-4,
+          -0.53934503652202981E-4,
+          -0.73719725930207741E-4,
+          -0.10076291841434166E-3,
+          -0.13772657995212199E-3,
+          -0.18824991498666665E-3,
+          -0.25730712622651765E-3,
+          -0.35169714266079951E-3,
+          -0.48071299839119416E-3,
+          -0.65705676501650234E-3,
+          -0.89809011592947082E-3,
+          -0.1227543645045574E-2,
+          -0.16778532284950701E-2,
+          -0.22933534524280088E-2,
+          -0.31346425113005175E-2,
+          -0.42845483164618585E-2,
+          -0.5856283199732382E-2,
+          -0.80045900716529013E-2,
+          -0.10940977413478261E-1,
+          -0.14954543042267635E-1,
+          -0.20440436823088014E-1,
+          -0.27938764583962678E-1,
+          -0.38187763462882919E-1,
+          -0.52196483989638824E-1,
+          -0.71344134712908958E-1,
+          -0.9751587020581845E-1,
+          -0.13328839126389203E+0,
+          -0.18218363029750562E+0,
+          -0.24901549815141064E+0,
+          -0.34036383081364141E+0,
+          -0.46522219775934398E+0
+        ],
         "stencilData": {
           "evolvedHarmonics": [],
           "evolvedVCells": [],
@@ -439,14 +3609,246 @@
           "requiredColVarPowers": [],
           "requiredMBColVarNames": [],
           "requiredMBColVarPowers": [],
-          "requiredMBRowVarNames": [
-            "nodeVar_0"
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ni",
+            "G_b"
           ],
-          "requiredMBRowVarPowers": [
+          "requiredRowVarPowers": [
+            -0.1E+1,
             0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "recyclingTerm_e": {
+        "customNormConst": {
+          "multConst": 0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "ne",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ni",
+        "skipPattern": false,
+        "spatialProfile": [
+          0.65532663615393665E-9,
+          0.89572531015699636E-9,
+          0.12243113387922492E-8,
+          0.16734351896705321E-8,
+          0.22873147093370513E-8,
+          0.3126388528126796E-8,
+          0.4273266459094205E-8,
+          0.58408627290353622E-8,
+          0.79835127872334557E-8,
+          0.10912168181436854E-7,
+          0.14915165490857358E-7,
+          0.20386614091789928E-7,
+          0.2786519763272685E-7,
+          0.38087209362717315E-7,
+          0.5205904283039187E-7,
+          0.71156274921771303E-7,
+          0.97259096315670533E-7,
+          0.13293742296853508E-6,
+          0.18170391351526263E-6,
+          0.24835980305242314E-6,
+          0.33946760187450359E-6,
+          0.46399719804135244E-6,
+          0.63420897488125239E-6,
+          0.86686088950063503E-6,
+          0.11848583534891337E-5,
+          0.16195093524656618E-5,
+          0.22136068290358731E-5,
+          0.30256418007676489E-5,
+          0.41355620096906304E-5,
+          0.56526430629221102E-5,
+          0.77262470063147992E-5,
+          0.10560527551111527E-4,
+          0.14434529735670432E-4,
+          0.19729662905715716E-4,
+          0.2696725182610149E-4,
+          0.3685986296510387E-4,
+          0.50381459207170828E-4,
+          0.68863289976060993E-4,
+          0.94124957493333327E-4,
+          0.12865356311325882E-3,
+          0.17584857133039975E-3,
+          0.24035649919559708E-3,
+          0.32852838250825117E-3,
+          0.44904505796473541E-3,
+          0.61377182252278701E-3,
+          0.83892661424753504E-3,
+          0.11466767262140044E-2,
+          0.15673212556502588E-2,
+          0.21422741582309292E-2,
+          0.2928141599866191E-2,
+          0.40022950358264506E-2,
+          0.54704887067391307E-2,
+          0.74772715211338173E-2,
+          0.10220218411544007E-1,
+          0.13969382291981339E-1,
+          0.1909388173144146E-1,
+          0.26098241994819412E-1,
+          0.35672067356454479E-1,
+          0.48757935102909225E-1,
+          0.66644195631946013E-1,
+          0.91091815148752808E-1,
+          0.12450774907570532E+0,
+          0.17018191540682071E+0,
+          0.23261109887967199E+0
+        ],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ni",
+            "G_b"
           ],
-          "requiredRowVarNames": [],
-          "requiredRowVarPowers": []
+          "requiredRowVarPowers": [
+            -0.1E+1,
+            0.1E+1
+          ]
+        },
+        "velocityProfile": [],
+        "multCopyTermName": "none"
+      },
+      "recyclingTerm_i": {
+        "customNormConst": {
+          "multConst": 0.1E+1,
+          "normNames": [],
+          "normPowers": []
+        },
+        "evaluatedTermGroup": 0,
+        "evolvedVar": "ni",
+        "fixedMatrix": false,
+        "generalGroups": [
+          1
+        ],
+        "harmonicProfile": [],
+        "implicitGroups": [
+          1
+        ],
+        "implicitVar": "ni",
+        "skipPattern": false,
+        "spatialProfile": [
+          0.65532663615393665E-9,
+          0.89572531015699636E-9,
+          0.12243113387922492E-8,
+          0.16734351896705321E-8,
+          0.22873147093370513E-8,
+          0.3126388528126796E-8,
+          0.4273266459094205E-8,
+          0.58408627290353622E-8,
+          0.79835127872334557E-8,
+          0.10912168181436854E-7,
+          0.14915165490857358E-7,
+          0.20386614091789928E-7,
+          0.2786519763272685E-7,
+          0.38087209362717315E-7,
+          0.5205904283039187E-7,
+          0.71156274921771303E-7,
+          0.97259096315670533E-7,
+          0.13293742296853508E-6,
+          0.18170391351526263E-6,
+          0.24835980305242314E-6,
+          0.33946760187450359E-6,
+          0.46399719804135244E-6,
+          0.63420897488125239E-6,
+          0.86686088950063503E-6,
+          0.11848583534891337E-5,
+          0.16195093524656618E-5,
+          0.22136068290358731E-5,
+          0.30256418007676489E-5,
+          0.41355620096906304E-5,
+          0.56526430629221102E-5,
+          0.77262470063147992E-5,
+          0.10560527551111527E-4,
+          0.14434529735670432E-4,
+          0.19729662905715716E-4,
+          0.2696725182610149E-4,
+          0.3685986296510387E-4,
+          0.50381459207170828E-4,
+          0.68863289976060993E-4,
+          0.94124957493333327E-4,
+          0.12865356311325882E-3,
+          0.17584857133039975E-3,
+          0.24035649919559708E-3,
+          0.32852838250825117E-3,
+          0.44904505796473541E-3,
+          0.61377182252278701E-3,
+          0.83892661424753504E-3,
+          0.11466767262140044E-2,
+          0.15673212556502588E-2,
+          0.21422741582309292E-2,
+          0.2928141599866191E-2,
+          0.40022950358264506E-2,
+          0.54704887067391307E-2,
+          0.74772715211338173E-2,
+          0.10220218411544007E-1,
+          0.13969382291981339E-1,
+          0.1909388173144146E-1,
+          0.26098241994819412E-1,
+          0.35672067356454479E-1,
+          0.48757935102909225E-1,
+          0.66644195631946013E-1,
+          0.91091815148752808E-1,
+          0.12450774907570532E+0,
+          0.17018191540682071E+0,
+          0.23261109887967199E+0
+        ],
+        "stencilData": {
+          "evolvedHarmonics": [],
+          "evolvedVCells": [],
+          "evolvedXCells": [],
+          "stencilType": "diagonalStencil"
+        },
+        "timeSignalData": {
+          "realTimePeriod": false,
+          "timeSignalParams": [],
+          "timeSignalPeriod": 0.0E+0,
+          "timeSignalType": "none"
+        },
+        "varData": {
+          "requiredColVarNames": [],
+          "requiredColVarPowers": [],
+          "requiredMBColVarNames": [],
+          "requiredMBColVarPowers": [],
+          "requiredMBRowVarNames": [],
+          "requiredMBRowVarPowers": [],
+          "requiredRowVarNames": [
+            "ni",
+            "G_b"
+          ],
+          "requiredRowVarPowers": [
+            -0.1E+1,
+            0.1E+1
+          ]
         },
         "velocityProfile": [],
         "multCopyTermName": "none"
@@ -455,14 +3857,34 @@
         "tags": []
       },
       "termTags": [
-        "nodeTerm_0"
+        "recyclingTerm_i",
+        "recyclingTerm_e",
+        "recyclingTermEnergy"
       ],
       "type": "customModel"
     },
     "tags": [
-      "predatorPrey",
-      "predatorPreyQuickerX",
-      "predatorPreyQuickerY"
+      "continuity-ne",
+      "continuity-ni",
+      "pressureGrad-Ge",
+      "pressureGrad-Gi",
+      "advection-Ge",
+      "advection-Gi",
+      "ampereMaxwell",
+      "lorentzForce",
+      "implicitTemp",
+      "advection-We",
+      "advection-Wi",
+      "advection-pe",
+      "advection-pi",
+      "lorentzForceWork",
+      "braginskiiq",
+      "divq_e",
+      "divq_i",
+      "eiHeatEx",
+      "energySource",
+      "eiFriction",
+      "rec"
     ]
   },
   "normalization": {
@@ -478,7 +3900,30 @@
     "crossSection": 0.73842563254919593E-18
   },
   "species": {
-    "names": []
+    "D+": {
+      "ID": -1,
+      "associatedVars": [
+        "ni",
+        "Gi",
+        "Wi"
+      ],
+      "atomicMass": 0.20139999999999998E+1,
+      "charge": 0.1E+1
+    },
+    "e": {
+      "ID": 0,
+      "associatedVars": [
+        "ne",
+        "Ge",
+        "We"
+      ],
+      "atomicMass": 0.54857968615286542E-3,
+      "charge": -0.1E+1
+    },
+    "names": [
+      "e",
+      "D+"
+    ]
   },
   "standardTextbook": {
     "electronPolytropicCoeff": 0.1E+1,
@@ -491,16 +3936,16 @@
     "initValFilename": "ReMKiT1DVarInput",
     "loadInitValsFromHDF5": false,
     "minimumSaveInterval": 0.10000000000000001E+0,
-    "mode": "normalizedTimeTarget",
-    "numTimesteps": 1,
-    "outputMode": "minimumSaveInterval",
+    "mode": "fixedNumSteps",
+    "numTimesteps": 1000,
+    "outputMode": "fixedNumSteps",
     "restart": {
-      "frequency": 1,
+      "frequency": 50,
       "load": false,
       "resetTime": false,
-      "save": false
+      "save": true
     },
-    "timeValueTarget": 0.5E+2
+    "timeValueTarget": 0.1E+1
   },
   "vGrid": {
     "cellCentreCoords": [
@@ -513,9 +3958,1077 @@
   },
   "variables": {
     "derivedVariables": {
+      "E": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "E_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "G_b": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "ni",
+            "ui",
+            "cs_b"
+          ],
+          "ruleName": "boundaryFlux"
+        },
+        "initVals": [
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": true,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Ge": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Ge_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Gi": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Gi_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Te_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Te"
+          ],
+          "ruleName": "gridToDual"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Ti_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Ti"
+          ],
+          "ruleName": "gridToDual"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "We_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "We"
+          ],
+          "ruleName": "gridToDual"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Wi_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Wi"
+          ],
+          "ruleName": "gridToDual"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "cs": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Te",
+            "Ti"
+          ],
+          "ruleName": "sonicSpeedD+"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "cs_b": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "cs"
+          ],
+          "ruleName": "linExtrapRight"
+        },
+        "initVals": [
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": true,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "gammaRight": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Te",
+            "Ti"
+          ],
+          "ruleName": "rightElectronGamma"
+        },
+        "initVals": [
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": true,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "ionGamma": {
+        "initVals": [
+          0.25E+1
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": true,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false,
+        "derivationRule": {
+          "ruleName": "none"
+        }
+      },
+      "n_b": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "ne"
+          ],
+          "ruleName": "linExtrapRight"
+        },
+        "initVals": [
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": true,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
       "names": [
-        "time"
+        "ne_dual",
+        "ni_dual",
+        "Ge",
+        "Gi",
+        "We_dual",
+        "Wi_dual",
+        "Te_dual",
+        "Ti_dual",
+        "qe",
+        "qi",
+        "E",
+        "ue_dual",
+        "ue",
+        "ui_dual",
+        "ui",
+        "cs",
+        "time",
+        "gammaRight",
+        "cs_b",
+        "n_b",
+        "G_b",
+        "u_b",
+        "ionGamma"
       ],
+      "ne_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "ne"
+          ],
+          "ruleName": "gridToDual"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "ni_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "ni"
+          ],
+          "ruleName": "gridToDual"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "qe": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "qe_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "qi": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "qi_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
       "time": {
         "initVals": [
           0.0E+0
@@ -529,18 +5042,946 @@
         "derivationRule": {
           "ruleName": "none"
         }
+      },
+      "u_b": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "G_b",
+            "n_b"
+          ],
+          "ruleName": "flowSpeedFromFlux"
+        },
+        "initVals": [
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": true,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "ue": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "ue_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "ue_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Ge_dual",
+            "ne_dual"
+          ],
+          "ruleName": "flowSpeedFromFlux"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "ui": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "ui_dual"
+          ],
+          "ruleName": "dualToGrid"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "ui_dual": {
+        "derivationRule": {
+          "requiredVarNames": [
+            "Gi_dual",
+            "ni_dual"
+          ],
+          "ruleName": "flowSpeedFromFlux"
+        },
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
       }
     },
     "implicitVariables": {
+      "E_dual": {
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Ge_dual": {
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Gi_dual": {
+        "initVals": [
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": true,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Te": {
+        "initVals": [
+          0.19955582746286435E+1,
+          0.19865999239243746E+1,
+          0.19775394272153042E+1,
+          0.19683739437915704E+1,
+          0.19591005057920796E+1,
+          0.19497160102855395E+1,
+          0.19402172107148203E+1,
+          0.19306007076415221E+1,
+          0.19208629387201417E+1,
+          0.19110001678227089E+1,
+          0.19010084732250403E+1,
+          0.18908837347546312E+1,
+          0.18806216197874541E+1,
+          0.18702175679662763E+1,
+          0.18596667744962045E+1,
+          0.18489641718536607E+1,
+          0.18381044097223616E+1,
+          0.18270818329436087E+1,
+          0.18158904572375594E+1,
+          0.18045239424163513E+1,
+          0.17929755627679551E+1,
+          0.17812381742402146E+1,
+          0.17693041779961669E+1,
+          0.17571654798425591E+1,
+          0.1744813444951163E+1,
+          0.1732238847194151E+1,
+          0.17194318122968093E+1,
+          0.17063817538687052E+1,
+          0.16930773012022944E+1,
+          0.16795062175185782E+1,
+          0.16656553070833653E+1,
+          0.16515103093029084E+1,
+          0.16370557775184484E+1,
+          0.1622274939735006E+1,
+          0.16071495379135834E+1,
+          0.15916596416918665E+1,
+          0.15757834314285062E+1,
+          0.1559496944225067E+1,
+          0.15427737749790686E+1,
+          0.15255847224388226E+1,
+          0.15078973674952894E+1,
+          0.14896755673170072E+1,
+          0.14708788440668332E+1,
+          0.14514616403343554E+1,
+          0.14313724043405993E+1,
+          0.14105524553229223E+1,
+          0.13889345616146345E+1,
+          0.13664411381989086E+1,
+          0.13429819328225845E+1,
+          0.13184510134195015E+1,
+          0.12927227834812505E+1,
+          0.12656466170294796E+1,
+          0.12370394871449515E+1,
+          0.120667559934839E+1,
+          0.11742714140542299E+1,
+          0.11394633100518219E+1,
+          0.11017729894054191E+1,
+          0.10605513776843134E+1,
+          0.10148823101594784E+1,
+          0.96340465792944641E+0,
+          0.90395033695608606E+0,
+          0.83269978480567697E+0,
+          0.74175067605463796E+0,
+          0.60882562280913666E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": true,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Ti": {
+        "initVals": [
+          0.19955582746286435E+1,
+          0.19865999239243746E+1,
+          0.19775394272153042E+1,
+          0.19683739437915704E+1,
+          0.19591005057920796E+1,
+          0.19497160102855395E+1,
+          0.19402172107148203E+1,
+          0.19306007076415221E+1,
+          0.19208629387201417E+1,
+          0.19110001678227089E+1,
+          0.19010084732250403E+1,
+          0.18908837347546312E+1,
+          0.18806216197874541E+1,
+          0.18702175679662763E+1,
+          0.18596667744962045E+1,
+          0.18489641718536607E+1,
+          0.18381044097223616E+1,
+          0.18270818329436087E+1,
+          0.18158904572375594E+1,
+          0.18045239424163513E+1,
+          0.17929755627679551E+1,
+          0.17812381742402146E+1,
+          0.17693041779961669E+1,
+          0.17571654798425591E+1,
+          0.1744813444951163E+1,
+          0.1732238847194151E+1,
+          0.17194318122968093E+1,
+          0.17063817538687052E+1,
+          0.16930773012022944E+1,
+          0.16795062175185782E+1,
+          0.16656553070833653E+1,
+          0.16515103093029084E+1,
+          0.16370557775184484E+1,
+          0.1622274939735006E+1,
+          0.16071495379135834E+1,
+          0.15916596416918665E+1,
+          0.15757834314285062E+1,
+          0.1559496944225067E+1,
+          0.15427737749790686E+1,
+          0.15255847224388226E+1,
+          0.15078973674952894E+1,
+          0.14896755673170072E+1,
+          0.14708788440668332E+1,
+          0.14514616403343554E+1,
+          0.14313724043405993E+1,
+          0.14105524553229223E+1,
+          0.13889345616146345E+1,
+          0.13664411381989086E+1,
+          0.13429819328225845E+1,
+          0.13184510134195015E+1,
+          0.12927227834812505E+1,
+          0.12656466170294796E+1,
+          0.12370394871449515E+1,
+          0.120667559934839E+1,
+          0.11742714140542299E+1,
+          0.11394633100518219E+1,
+          0.11017729894054191E+1,
+          0.10605513776843134E+1,
+          0.10148823101594784E+1,
+          0.96340465792944641E+0,
+          0.90395033695608606E+0,
+          0.83269978480567697E+0,
+          0.74175067605463796E+0,
+          0.60882562280913666E+0
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": true,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "We": {
+        "initVals": [
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
+      "Wi": {
+        "initVals": [
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.23999999999999999E+1,
+          0.24000000000000004E+1,
+          0.24000000000000004E+1
+        ],
+        "isDistribution": false,
+        "isOnDualGrid": false,
+        "isScalar": false,
+        "isStationary": false,
+        "priority": 0,
+        "isSingleHarmonic": false
+      },
       "names": [
-        "x1",
-        "x2",
-        "y1",
-        "y2"
+        "ne",
+        "ni",
+        "Ge_dual",
+        "Gi_dual",
+        "We",
+        "Wi",
+        "Te",
+        "Ti",
+        "qe_dual",
+        "qi_dual",
+        "E_dual"
       ],
-      "x1": {
+      "ne": {
         "initVals": [
-          0.1E+2
+          0.80178064471594868E+0,
+          0.80539618507551525E+0,
+          0.809086270534216E+0,
+          0.81285367805570941E+0,
+          0.8167013357760875E+0,
+          0.8206323339190702E+0,
+          0.82464993669988296E+0,
+          0.82875759532617521E+0,
+          0.83295896221833998E+0,
+          0.83725790658770805E+0,
+          0.84165853152964509E+0,
+          0.84616519281002889E+0,
+          0.85078251954841955E+0,
+          0.85551543703007893E+0,
+          0.8603691919125942E+0,
+          0.86534938013208551E+0,
+          0.87046197785993762E+0,
+          0.87571337591499254E+0,
+          0.88111041809978741E+0,
+          0.88666044400470356E+0,
+          0.892371336913235E+0,
+          0.89825157754800455E+0,
+          0.90431030452439609E+0,
+          0.91055738253141594E+0,
+          0.91700347944349081E+0,
+          0.92366015378979116E+0,
+          0.93053995427869118E+0,
+          0.93765653340612876E+0,
+          0.94502477758328107E+0,
+          0.95266095672093065E+0,
+          0.96058289683095932E+0,
+          0.96881017998328423E+0,
+          0.97736437693368039E+0,
+          0.98626931897336434E+0,
+          0.99555141712396911E+0,
+          0.10052400388183922E+1,
+          0.1015367954814413E+1,
+          0.10259718724842128E+1,
+          0.1037093076087392E+1,
+          0.10487782005592035E+1,
+          0.10610801732863948E+1,
+          0.10740593691025582E+1,
+          0.10877850384849916E+1,
+          0.11023370894124545E+1,
+          0.11178083321629242E+1,
+          0.11343073374989852E+1,
+          0.11519621184600679E+1,
+          0.1170924934321681E+1,
+          0.11913786484358975E+1,
+          0.1213545276779211E+1,
+          0.12376976877372459E+1,
+          0.12641759385848639E+1,
+          0.12934106118898032E+1,
+          0.132595703506726E+1,
+          0.13625470064675433E+1,
+          0.14041698279229662E+1,
+          0.14522047784666179E+1,
+          0.15086492117841181E+1,
+          0.15765374802410108E+1,
+          0.16607766911141235E+1,
+          0.17700087433871139E+1,
+          0.19214608063978114E+1,
+          0.21570590383690367E+1,
+          0.26280102874408606E+1
         ],
         "isDistribution": false,
         "isOnDualGrid": false,
@@ -549,9 +5990,72 @@
         "priority": 0,
         "isSingleHarmonic": false
       },
-      "x2": {
+      "ni": {
         "initVals": [
-          0.1E+2
+          0.80178064471594868E+0,
+          0.80539618507551525E+0,
+          0.809086270534216E+0,
+          0.81285367805570941E+0,
+          0.8167013357760875E+0,
+          0.8206323339190702E+0,
+          0.82464993669988296E+0,
+          0.82875759532617521E+0,
+          0.83295896221833998E+0,
+          0.83725790658770805E+0,
+          0.84165853152964509E+0,
+          0.84616519281002889E+0,
+          0.85078251954841955E+0,
+          0.85551543703007893E+0,
+          0.8603691919125942E+0,
+          0.86534938013208551E+0,
+          0.87046197785993762E+0,
+          0.87571337591499254E+0,
+          0.88111041809978741E+0,
+          0.88666044400470356E+0,
+          0.892371336913235E+0,
+          0.89825157754800455E+0,
+          0.90431030452439609E+0,
+          0.91055738253141594E+0,
+          0.91700347944349081E+0,
+          0.92366015378979116E+0,
+          0.93053995427869118E+0,
+          0.93765653340612876E+0,
+          0.94502477758328107E+0,
+          0.95266095672093065E+0,
+          0.96058289683095932E+0,
+          0.96881017998328423E+0,
+          0.97736437693368039E+0,
+          0.98626931897336434E+0,
+          0.99555141712396911E+0,
+          0.10052400388183922E+1,
+          0.1015367954814413E+1,
+          0.10259718724842128E+1,
+          0.1037093076087392E+1,
+          0.10487782005592035E+1,
+          0.10610801732863948E+1,
+          0.10740593691025582E+1,
+          0.10877850384849916E+1,
+          0.11023370894124545E+1,
+          0.11178083321629242E+1,
+          0.11343073374989852E+1,
+          0.11519621184600679E+1,
+          0.1170924934321681E+1,
+          0.11913786484358975E+1,
+          0.1213545276779211E+1,
+          0.12376976877372459E+1,
+          0.12641759385848639E+1,
+          0.12934106118898032E+1,
+          0.132595703506726E+1,
+          0.13625470064675433E+1,
+          0.14041698279229662E+1,
+          0.14522047784666179E+1,
+          0.15086492117841181E+1,
+          0.15765374802410108E+1,
+          0.16607766911141235E+1,
+          0.17700087433871139E+1,
+          0.19214608063978114E+1,
+          0.21570590383690367E+1,
+          0.26280102874408606E+1
         ],
         "isDistribution": false,
         "isOnDualGrid": false,
@@ -560,25 +6064,151 @@
         "priority": 0,
         "isSingleHarmonic": false
       },
-      "y1": {
+      "qe_dual": {
         "initVals": [
-          0.2E+1
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
         ],
         "isDistribution": false,
-        "isOnDualGrid": false,
+        "isOnDualGrid": true,
         "isScalar": false,
-        "isStationary": false,
+        "isStationary": true,
         "priority": 0,
         "isSingleHarmonic": false
       },
-      "y2": {
+      "qi_dual": {
         "initVals": [
-          0.2E+1
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0,
+          0.0E+0
         ],
         "isDistribution": false,
-        "isOnDualGrid": false,
+        "isOnDualGrid": true,
         "isScalar": false,
-        "isStationary": false,
+        "isStationary": true,
         "priority": 0,
         "isSingleHarmonic": false
       }
@@ -586,13 +6216,139 @@
   },
   "xGrid": {
     "cellCentreCoords": [
-      0.0E+0
+      0.78125E-1,
+      0.234375E+0,
+      0.390625E+0,
+      0.546875E+0,
+      0.703125E+0,
+      0.859375E+0,
+      0.1015625E+1,
+      0.1171875E+1,
+      0.1328125E+1,
+      0.1484375E+1,
+      0.1640625E+1,
+      0.1796875E+1,
+      0.1953125E+1,
+      0.2109375E+1,
+      0.2265625E+1,
+      0.2421875E+1,
+      0.2578125E+1,
+      0.2734375E+1,
+      0.2890625E+1,
+      0.3046875E+1,
+      0.3203125E+1,
+      0.3359375E+1,
+      0.3515625E+1,
+      0.3671875E+1,
+      0.3828125E+1,
+      0.3984375E+1,
+      0.4140625E+1,
+      0.4296875E+1,
+      0.4453125E+1,
+      0.4609375E+1,
+      0.4765625E+1,
+      0.4921875E+1,
+      0.5078125E+1,
+      0.5234375E+1,
+      0.5390625E+1,
+      0.5546875E+1,
+      0.5703125E+1,
+      0.5859375E+1,
+      0.6015625E+1,
+      0.6171875E+1,
+      0.6328125E+1,
+      0.6484375E+1,
+      0.6640625E+1,
+      0.6796875E+1,
+      0.6953125E+1,
+      0.7109375E+1,
+      0.7265625E+1,
+      0.7421875E+1,
+      0.7578125E+1,
+      0.7734375E+1,
+      0.7890625E+1,
+      0.8046875E+1,
+      0.8203125E+1,
+      0.8359375E+1,
+      0.8515625E+1,
+      0.8671875E+1,
+      0.8828125E+1,
+      0.8984375E+1,
+      0.9140625E+1,
+      0.9296875E+1,
+      0.9453125E+1,
+      0.9609375E+1,
+      0.9765625E+1,
+      0.9921875E+1
     ],
     "faceJacobians": [
       0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
+      0.1E+1,
       0.1E+1
     ],
-    "isLengthInMeters": false,
+    "isLengthInMeters": true,
     "isPeriodic": false,
     "cellWidths": [],
     "constructFromWidths": false

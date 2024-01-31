@@ -2,7 +2,7 @@ import numpy as np
 
 from RMK_support import Node, atan, abs, log, sign
 
-def beta(Ts:str|float,ms:float) -> Node|float:
+def beta(Ts,ms):
     """Function which calculates the inverse thermal velocity used in anisotropic calculations. Normalised to the elctron mass
 
     Args:
@@ -17,7 +17,7 @@ def beta(Ts:str|float,ms:float) -> Node|float:
         return  ms/elMass*(Node(Ts))**-1
     return ms/(elMass*Ts)
 
-def betasr(Ts:str|float,Tr:str|float,ms:float,mr:float) -> Node|float:
+def betasr(Ts,Tr,ms,mr):
     """Calculates the harmonic mean of the inverse thermal velocities of species s and r
     NOTE that there is no specification of whether the parallel or perpendicular temperature is used, care should be taken to ensure that the same direction is used for both species
 
@@ -32,7 +32,7 @@ def betasr(Ts:str|float,Tr:str|float,ms:float,mr:float) -> Node|float:
     """
     return (beta(Ts,ms)**-1 + beta(Tr,mr)**-1)**-1
 
-def alphasr(TsPar:str|float,TsPerp:str|float,TrPar:str|float,TrPerp:str|float,ms:float,mr:float) -> Node|float:
+def alphasr(TsPar,TsPerp,TrPar,TrPerp,ms,mr):
     """Calculates the degree of anisotropy of the two species s and r, through the ratio of the harmonic mean of the inverse thermal velocities of species s and r
 
     Args:
@@ -48,7 +48,7 @@ def alphasr(TsPar:str|float,TsPerp:str|float,TrPar:str|float,TrPerp:str|float,ms
     """
     return betasr(TsPar,TrPar,ms,mr)/betasr(TsPerp,TrPerp,ms,mr)
 
-def X(alpha:Node|float) -> Node|float:
+def X(alpha):
     """Calculates the primary variable X, which the solutions to bi-Maxwellian type integrals of the form K_LMN are functions of
 
     Args:
@@ -59,7 +59,7 @@ def X(alpha:Node|float) -> Node|float:
     """
     return alpha - 1
 
-def phiPositive(X:Node|float) -> Node|float:
+def phiPositive(X):
     """Calculates the function phi, which the solutions to bi-Maxwellian type integrals of the form K_LMN contain, for positive values of X
 
     Args:
@@ -72,7 +72,7 @@ def phiPositive(X:Node|float) -> Node|float:
         return atan(abs(X)**0.5)*abs(X)**-0.5
     return np.arctan(np.abs(X)**0.5)*np.abs(X)**-0.5
 
-def phiNegative(X:Node|float) -> Node|float:
+def phiNegative(X):
     """Calculates the function phi, which the solutions to bi-Maxwellian type integrals of the form K_LMN contain, for negative values of X
 
     Args:
@@ -85,7 +85,7 @@ def phiNegative(X:Node|float) -> Node|float:
         return log(abs((1+abs(X)**0.5)/(1-abs(X)**0.5)))*0.5*abs(X)**-0.5
     return np.log((1+np.sqrt(np.abs(X)))/(1-np.sqrt(np.abs(X))))/(2*np.sqrt(np.abs(X)))
 
-def stepFunc(X:Node|float) -> Node|float:
+def stepFunc(X):
     """Creates a step function centred at X = 0. Used to combine the positive and negative forms of the function phi, which are each only valid for values of X with the respective sign
 
     Args:
@@ -97,7 +97,7 @@ def stepFunc(X:Node|float) -> Node|float:
         return 0.5 + 0.5*sign(X)
     return np.heaviside(X,0.5)
 
-def phi(X:Node|float) -> Node|float:
+def phi(X):
     """Calculates the function phi, which the solutions to bi-Maxwellian type integrals of the form K_LMN contain, for all values of X
 
     Args:
@@ -108,7 +108,7 @@ def phi(X:Node|float) -> Node|float:
     """
     return phiPositive(X)*stepFunc(X) + phiNegative(X)*stepFunc(-X)
 
-def K_LMN(alpha:Node|float,LMN:str,smallX:bool=False) -> Node|float|ValueError:
+def K_LMN(alpha,LMN,smallX=False):
     """Calculates the variables which are solutions to bi-Maxwellian type integrals, see Chodura & Pohl 1971 for more info.
 
     Args:
